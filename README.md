@@ -4,39 +4,54 @@
 
 | 元件名稱 | 數量 | 備註 |
 | :--- | :--- | :--- |
-| ESP32-C3 Super Mini | 1 |  |
-| PN532 NFC RFID V3 模組 | 1 |  |
-| TP4056 充放電模組 | 1 |  |
-| Type-C 公頭 | 1 | 帶小型 PCB 版 |
-| 200mAh 聚合物離電池 | 1 |  |
-| SMD 0402 10kΩ | 1 | 6.2kΩ ~ 10KΩ |
-| 單芯線/多芯線 | 若干長度 | 建議 0.5 mmΦ 左右 |
+| **ESP32-C3 Super Mini** | 1 |  |
+| **PN532 NFC RFID V3 模組** | 1 |  |
+| **TP4056 充放電模組** | 1 |  |
+| **Type-C 公頭** | 1 | 帶小型 PCB 版 |
+| **200mAh 聚合物離電池** | 1 |  |
+| **SMD 0402 10kΩ** | 1 | 6.2kΩ ~ 10KΩ |
 
 ### 元件圖片
 
-#### ESP32-C3 Super Mini
-
 <table>
-  <img src="https://michiel.vanderwulp.be/domotica/Modules/ESP32-C3-SuperMini/ESP32-C3-SuperMini.jpg" alt="ESP32-C3 Super Mini" width="200">
+  <tr>
+    <td align="center" width="50%">
+      <img src="https://michiel.vanderwulp.be/domotica/Modules/ESP32-C3-SuperMini/ESP32-C3-SuperMini.jpg" alt="ESP32-C3 Super Mini" width="250">
+      <br>
+      <sub><b>ESP32-C3 Super Mini</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="https://easyelecmodule.com/wp-content/uploads/nfc_04.jpg" alt="PN532 NFC RFID V3" width="300">
+      <br>
+      <sub><b>PN532 NFC RFID V3</b></sub>
+    </td>
+      <tr>
+    <td align="center" width="50%">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4uhXMvRz9wu1NOUzWIRsSd2w30YCk3So4CHfJIP75gDqFT4nOua6oa69-&s=10" alt="TP4056" width="350">
+      <br>
+      <sub><b>TP4056</b></sub>
+    </td>
+    <td align="center" width="50%">
+      <img src="https://down-tw.img.susercontent.com/file/39d3b62954eeaba6b0fc198fe3d5de49" alt="Type-C 公頭" width="300">
+      <br>
+      <sub><b>Type-C 公頭</b></sub>
+    </td>
+  </tr>
 </table>
 
-#### PN532 NFC RFID V3
+---
 
-<table>
-  <img src="https://easyelecmodule.com/wp-content/uploads/nfc_04.jpg" alt="PN532 NFC RFID V3" width="270">
-</table>
+## 準備工具及材料
+| 工具名稱 | 數量 | 備註 |
+| :--- | :--- | :--- |
+| **電烙鐵** | 1組 | 建議使用恆溫型 |
+| **熱風槍** | 1 | 用於解焊 SMD 元件，選用 |
+| **吸錫線** | 1捲 | 輔助焊槍解焊 SMD |
+| **鑷子** | 1 | 輔助焊接及解焊 |
+| **焊錫** | 1捲 |  |
+| **單芯線或多芯線** | 若干長度 | 建議 0.5 mmΦ 左右 |
 
-#### TP4056
-
-<table>
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4uhXMvRz9wu1NOUzWIRsSd2w30YCk3So4CHfJIP75gDqFT4nOua6oa69-&s=10" alt="TP4056" width="300">
-</table>
-
-#### Type-C 公頭
-
-<table>
-  <img src="https://down-tw.img.susercontent.com/file/39d3b62954eeaba6b0fc198fe3d5de49" alt="TP4056" width="300">
-</table>
+---
 
 ## PN532 硬體說明
 
@@ -74,27 +89,33 @@
 ### 三、 使用限制與注意事項
 
 1. **卡模擬模式無法替代實體複製卡**：
-   * PN532 在卡模擬模式下（`TgInitAsTarget`）**不支援硬體層級的 Mifare Classic (Crypto1) 加密驗證**。
-   * 若目標門禁機僅驗證 **4-byte UID 卡號**，可直接透過 PN532 模擬開門；若門禁系統會驗證扇區密碼或資料內容，則必須將資料寫入實體的 **UID / CUID / FUID** 空白卡中。
+   * **PN532** 在目標模擬模式下（`TgInitAsTarget`）**不支援硬體層級的 Mifare Classic (Crypto1) 加密驗證**。
+   * 若目標門禁機僅驗證 **4-byte UID 卡號**，可直接透過 **PN532** 模擬開門；若門禁系統會驗證扇區密碼或資料內容，則必須將資料寫入實體的 **UID / CUID / FUID** 空白卡中。
+   * **PN532** 在模擬 **4-byte UID** 時硬體限制第一個位元組固定寫死為 `0x08`，**原因如下**：
+     * **國際標準規範**：根據 **ISO/IEC 14443-3 Type A** 標準，當 **4-byte UID** 的**第一個位元組**（**UID0**）為 `0x08` 時，代表這是一組動態生成的「**隨機 UID**」，而非出廠固定的唯一識別碼。
+     * **硬體防偽與安全限制**：**NXP**（**恩智浦**）在設計 **PN532** 晶片韌體時，為了防止開發者隨意**克隆**（**Clone**）具有固定卡號的門禁卡或交通卡，直接在晶片內部限制了目標模擬模式（`TgInitAsTarget`）。無論外部 **MCU** 傳入什麼數值，**PN532** 都會自動將回應給讀卡機的 **UID 第一個位元組**覆蓋為 `0x08`，只允許自訂後面的 3 個 **bytes**（**UID1 ~ UID3**）。
+
 2. **無被動感應供電能力**：
    * 執行卡模擬時，PN532 模組必須保持外部獨立供電，無法像被動式實體感應卡一樣依靠讀卡機的射頻磁場啟動。
 
 ---
 
-### 功能列表
+## 本專案設計功能
 
-#### 1. 核心感應與多卡管理
-* **卡片讀取**：支援讀取 13.56 MHz 高頻卡片（ISO 14443 Type A）之 UID 卡號與基礎通訊參數（ATQA / SAK）。
-* **本機儲存**：將讀取到的卡片資料儲存於 ESP32-C3 內部 Flash（NVS / LittleFS），斷電後資料不遺失。
-* **多卡快速切換**：支援儲存多組卡片設定檔，可透過實體按鍵（或網頁介面）快速切換目前啟用的卡槽。
-* **卡片模擬**：透過 PN532 卡模擬模式，模擬已選取之 4-byte UID 卡片供外部門禁讀卡機感應。
+### 1. 核心感應與多卡管理
+* **卡片讀取**：支援讀取 **13.56 MHz* 高頻卡片（**ISO 14443 Type A**）之 **UID** 卡號與基礎通訊參數（**ATQA / SAK**）。
+* **本機儲存**：將讀取到的卡片資料儲存於 **ESP32-C3** 內部 **Flash（NVS / LittleFS）**，斷電後資料不遺失。
+* **多卡快速切換**：支援儲存多組卡片設定檔，可透藍芽廣播快速切換目前啟用的卡槽。
+* **卡片模擬**：透過 **PN532** 卡模擬模式，模擬已選取之 **4-byte UID** 卡片供外部門禁讀卡機感應。
 <!-- * **卡片寫入功能**：支援將本機儲存的卡號與扇區資料寫入實體空白複製卡（UID / CUID / FUID）。 -->
 <!-- * **Mifare Classic 完整扇區讀寫**：加入金鑰管理與完整 Dump 匯入／匯出功能。 -->
 
-#### 2. 硬體與低功耗設計
-* **獨立隨身供電**：內建鋰電池與 Type-C 充放電管理模組，無需外接電腦即可獨立運作。
-* **低功耗待機 (Low Power)**：閒置時自動進入 Deep Sleep 深度睡眠模式，支援按鍵喚醒以延長電池續航力。
-* **加厚卡片型外殼**：名片／標準卡片長寬尺寸，厚度可完整容納電池、Type-C 接口與天線模組，方便隨身攜帶。
+### 2. 硬體與低功耗設計
+* **獨立隨身供電**：內建鋰電池與 **Type-C** 充放電管理模組，無需外接電腦即可獨立運作。
+* **低功耗待機 (Low Power)**：閒置時自動進入 **Deep Sleep** 深度睡眠模式，透過感應喚醒以延長電池續航力。
+* **加厚卡片型外殼**：名片／標準卡片長寬尺寸，厚度完整容納電池與 **Type-C** 接口，方便隨身攜帶。
+
+---
 
 ## 硬體接線
 
@@ -110,34 +131,41 @@
 | **GPIO2** | **RSTO** | 用來對 PN532 晶片進行硬體重置（Reset） |
 | **GPIO3** | **IRQ** | 用來喚醒處於睡眠狀態的 ESP32-C3 |
 
-## TP4056 充放電模組
-
-### 電阻替換
-
-常見 **TP4056** 充放電模組預設使用 **1.2K** 作為 **$R_{PROG}$** ，使充電電流設定為 **1A**
-#### TP4056 應用典型電路
 <table>
-  <img src="https://solderingmind.com/wp-content/uploads/2023/12/1A-Lithium-ion-battery-charger-circuit-using-TP4056-1024x576.webp" alt="TP4056 應用典型電路" width="500">
+  <img src="https://od.lk/s/NTNfNTM2MDU4NDZfNUV0UWs/IMG_2466.jpg" alt="TP4056 應用典型電路" width="300">
 </table>
 
-TP4056 的充電電流計算公式為：
+### TP4056 充放電模組
 
-$$
-I_{BAT}=\frac{1200}{R_{PROG}}
-$$
+#### 電阻替換
 
-（其中 **$I_{BAT}$** 為充電電流，單位為安培 A； **$R_{PROG}$** 為設定電阻值，單位為歐姆 Ω）
+常見 **TP4056** 充放電模組預設使用 **1.2KΩ** 作為 **$R_{PROG}$** 電阻，使充電電流設定為 **1A**
+
+**TP4056** 應用典型電路
+
+<table>
+  <img src="https://solderingmind.com/wp-content/uploads/2023/12/1A-Lithium-ion-battery-charger-circuit-using-TP4056-1024x576.webp" alt="TP4056 應用典型電路" width="600">
+</table>
 
 若要為 **200mAh** 的聚合物鋰電池安全充電，需要將原本設定為 **1A** 的充電電流調降至 **100mA～200mA**
 
-| 目標充電電流 | 建議電阻阻值** | 充電倍率（對 200mAh） | 特性與建議 |
-| :--- | :--- | :--- | :--- | :--- |
-| **130mA** | **9.1kΩ**(912) 或 **10kΩ**(103) | 約 0.6C | 發熱低且最保護電池壽命 |
-| **200mA** | **6.2kΩ**(622) | 1C | 充電速度較快，約 1～1.5 小時可充滿 |
+TP4056 的充電電流計算公式為： $$I_{BAT}=\frac{1200}{R_{PROG}}$$
 
+（其中 **$I_{BAT}$** 為充電電流，單位為安培 A； **$R_{PROG}$** 為設定電阻值，單位為歐姆 Ω）
+經計算對應充電電流：
+| 目標充電電流 | 對應電阻阻值 | 充電倍率（200mAh） | 特性與建議 |
+| :--- | :--- | :--- | :--- |
+| **130mA** | **9.1kΩ**(912) 或 **10kΩ**(103) | 約 **0.6C** | 發熱低且最保護電池壽命 |
+| **200mA** | **6.2kΩ**(622) | **1C** | 充電速度較快，約 1～1.5 小時可充滿 |
+
+本專案使用 **10kΩ**(103) 更換原本 **1.2KΩ** 的 **$R_{PROG}$** 電阻
+
+依據電路圖 **$R_{PROG}$** 電阻與 **TP4056** 的腳位 **2** 串聯接地
+
+而常見 **TP4056** 充放電模組的 **$R_{PROG}$** 電阻通常為 **R3**
 
 <table>
-  <img src="https://medias.digi-electronics.com/blogs/ef53dd95-798a-4861-94ff-5c1d4fccb5eb.png" alt="TP4056" width="300">
+  <img src="https://img.shoplineapp.com/media/image_clips/64e20e87468dc500014f2742/original.jpg?1692536454" alt="TP4056" width="600">
 </table>
 
 # 免責聲明
