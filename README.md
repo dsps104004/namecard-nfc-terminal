@@ -120,18 +120,19 @@
   <img src="https://solderingmind.com/wp-content/uploads/2023/12/1A-Lithium-ion-battery-charger-circuit-using-TP4056-1024x576.webp" alt="TP4056 應用典型電路" width="500">
 </table>
 
-<table>
-  <img src="https://medias.digi-electronics.com/blogs/ef53dd95-798a-4861-94ff-5c1d4fccb5eb.png" alt="TP4056" width="300">
-</table>
-
 TP4056 的充電電流計算公式為：
-
-充電電流計算公式為：
 
 $$
 I_{BAT}=\frac{1200}{R_{PROG}}
 $$
 
+（其中 $I_{BAT}$ 為充電電流，單位為安培 A；$R_{PROG}$ 為設定電阻值，單位為歐姆 $\Omega$）
+
+若要為 **200mAh** 的聚合物鋰電池安全充電，需要將原本設定為 **1A** 的充電電流調降至 **100mA～200mA**
+
+<table>
+  <img src="https://medias.digi-electronics.com/blogs/ef53dd95-798a-4861-94ff-5c1d4fccb5eb.png" alt="TP4056" width="300">
+</table>
 
 # 免責聲明
 
