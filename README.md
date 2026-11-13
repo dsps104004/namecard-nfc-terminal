@@ -114,7 +114,7 @@
 
 ### 電阻替換
 
-常見 **TP4056** 充放電模組預設使用 **1.2K** 作為 ***R<sub>PROG</sub>*** 使充電電流為 **1A**
+常見 **TP4056** 充放電模組預設使用 **1.2K** 作為 **$R_{PROG}$** ，使充電電流設定為 **1A**
 #### TP4056 應用典型電路
 <table>
   <img src="https://solderingmind.com/wp-content/uploads/2023/12/1A-Lithium-ion-battery-charger-circuit-using-TP4056-1024x576.webp" alt="TP4056 應用典型電路" width="500">
@@ -126,9 +126,15 @@ $$
 I_{BAT}=\frac{1200}{R_{PROG}}
 $$
 
-（其中 $I_{BAT}$ 為充電電流，單位為安培 A；$R_{PROG}$ 為設定電阻值，單位為歐姆 $\Omega$）
+（其中 **$I_{BAT}$** 為充電電流，單位為安培 A； **$R_{PROG}$** 為設定電阻值，單位為歐姆 Ω）
 
 若要為 **200mAh** 的聚合物鋰電池安全充電，需要將原本設定為 **1A** 的充電電流調降至 **100mA～200mA**
+
+| 目標充電電流 | 建議電阻阻值** | 充電倍率（對 200mAh） | 特性與建議 |
+| :--- | :--- | :--- | :--- | :--- |
+| **130mA** | **9.1kΩ**(912) 或 **10kΩ**(103) | 約 0.6C | 發熱低且最保護電池壽命 |
+| **200mA** | **6.2kΩ**(622) | 1C | 充電速度較快，約 1～1.5 小時可充滿 |
+
 
 <table>
   <img src="https://medias.digi-electronics.com/blogs/ef53dd95-798a-4861-94ff-5c1d4fccb5eb.png" alt="TP4056" width="300">
